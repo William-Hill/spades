@@ -21,14 +21,14 @@ def generate_deck():
 def deal_hand(hand_list, deck):
     for _ in range(5):
         item = deck.pop()
-        print "item:", item
+        # print "item:", item
         hand_list.append(item)
 
 def calculate_card_value(rank, suit):
     #TODO: Add multiplier for spades suit
     rank_value = RANKS.index(rank)
     suit_value = SUITS.index(suit)
-    print "{rank} of {suit} = {value}".format(rank=rank, suit=suit, value=rank_value + suit_value)
+    # print "{rank} of {suit} = {value}".format(rank=rank, suit=suit, value=rank_value + suit_value)
     return rank_value + suit_value
 
 def getKey(hand):
@@ -54,16 +54,17 @@ def compare_cards(card_1, card_2):
 
 def initialize_game():
     global AI_hand
+    global players_hand
     deck_of_cards = generate_deck()
-    print "deck_of_cards type: ", type(deck_of_cards)
-    print "number of cards:", len(deck_of_cards)
-    print "cards:", deck_of_cards
+    # print "number of cards:", len(deck_of_cards)
+    # print "cards:", deck_of_cards
     random.shuffle(deck_of_cards)
-    print "shuffled deck:", deck_of_cards
+    # print "shuffled deck:", deck_of_cards
 
     deal_hand(AI_hand, deck_of_cards)
     AI_hand = sort_hand(AI_hand)
     deal_hand(players_hand, deck_of_cards)
+    players_hand = sort_hand(players_hand)
 
 
 def find_cards_of_suit(suit, hand):
@@ -101,7 +102,37 @@ def AI_choose_card(hand, players_card = None):
         chosen_card = hand.pop(0)
         return chosen_card
 
-initialize_game()
 #TODO: log AI_hand to a file with timestamp and unique gameID and/or timestamp
 print "AI_hand:", AI_hand
 print "players_hand: ", players_hand
+
+def print_players_hand():
+    '''print the player's hand of cards as a menu style that allows cards to be
+    selected.
+    Example:
+    1) 3_Hearts
+    2) King_Diamonds
+    3) Ace_Spades '''
+    pass
+
+def main():
+    print "Welcome to the CyberCamp 2017 Game of Spades!!"
+    print "You will be playing against an AI-controlled opponent."
+    initialize_game()
+
+    # print "Here's the hand you have been dealt: \n"
+    while len(players_hand) > 0:
+        #TODO: replace this with print_players_hand()
+        print players_hand
+        players_card_selection = int(raw_input("Choose a card to play \n"))
+        #TODO: Add a check for if spades have been cut
+        players_card = players_hand.pop(players_card_selection-1)
+        AI_card = AI_choose_card(AI_hand, players_card)
+        compare_cards(players_card, AI_card)
+        print "player's tricks:", players_books
+        print "AI's tricks: ", AI_books
+
+
+
+if __name__ == '__main__':
+    main()
