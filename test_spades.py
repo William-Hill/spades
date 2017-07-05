@@ -2,18 +2,19 @@ import unittest
 from collections import namedtuple
 import spades
 
-class test_spades(unittest.TestCase):
-    test_hand = [spades.Card('3', 'spades', 4), spades.Card('5', 'spades', 6), spades.Card('ace', 'spades', 15),spades.Card('3', 'hearts', 3), spades.Card('3', 'clubs', 1)]
-    def setup(self):
+class test_SPADES(unittest.TestCase):
+    TEST_HAND = [spades.Card('3', 'spades', 4), spades.Card('5', 'spades', 6), spades.Card('ace', 'spades', 15),spades.Card('3', 'hearts', 3), spades.Card('3', 'clubs', 1)]
+    def setUp(self):
         spades.initialize_game()
 
     def test_generate_deck(self):
         deck = spades.generate_deck()
         print "deck: ", deck
         self.assertIsNotNone(deck)
+        self.assertEqual(len(deck), 52)
 
     def test_sort_hand(self):
-        sorted_hand = spades.sort_hand(self.test_hand)
+        sorted_hand = spades.sort_hand(self.TEST_HAND)
         print "sorted_hand: ", sorted_hand
         self.assertTrue(sorted_hand[0].value, 1)
 
@@ -26,8 +27,9 @@ class test_spades(unittest.TestCase):
     def test_AI_choose_card(self):
         print "spades.AI_hand:", spades.AI_hand
         player_card = spades.Card('7', 'diamonds', 6)
-        sorted_hand = spades.sort_hand(self.test_hand)
+        sorted_hand = spades.sort_hand(self.TEST_HAND)
         chosen_card = spades.AI_choose_card(sorted_hand, player_card)
+        #TODO: Fix this test case; should cut with Ace of Spades
         self.assertEqual(chosen_card.value, 1)
         print "remaining hand: ", sorted_hand
 
@@ -51,7 +53,7 @@ class test_spades(unittest.TestCase):
         self.assertTrue(spades.players_books, 1)
 
     def test_find_cards_of_suit(self):
-        output = spades.find_cards_of_suit("spades", self.test_hand)
+        output = spades.find_cards_of_suit("spades", self.TEST_HAND)
         self.assertTrue(len(output), 3)
 
 

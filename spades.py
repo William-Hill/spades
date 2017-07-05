@@ -84,7 +84,7 @@ def AI_choose_card(hand, players_card = None):
         #if card is found of same suit, set as temp card
             if card.suit == players_card.suit:
                 temp_card = card
-                if card.value > players_card.value:
+                if temp_card.value > players_card.value:
                     break
                 else:
                     continue
@@ -103,10 +103,10 @@ def AI_choose_card(hand, players_card = None):
         return chosen_card
 
 #TODO: log AI_hand to a file with timestamp and unique gameID and/or timestamp
-print "AI_hand:", AI_hand
-print "players_hand: ", players_hand
+# print "AI_hand:", AI_hand
+# print "players_hand: ", players_hand
 
-def print_players_hand():
+def print_players_hand(players_hand):
     '''print the player's hand of cards as a menu style that allows cards to be
     selected.
     Example:
@@ -129,8 +129,8 @@ def main():
         players_card = players_hand.pop(players_card_selection-1)
         AI_card = AI_choose_card(AI_hand, players_card)
         compare_cards(players_card, AI_card)
-        print "player's tricks:", players_books
-        print "AI's tricks: ", AI_books
+        print "player's books:", players_books
+        print "AI's books: ", AI_books
 
 
 
