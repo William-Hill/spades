@@ -1,3 +1,4 @@
+#!python2
 import unittest
 from collections import namedtuple
 import spades
@@ -48,10 +49,15 @@ class test_SPADES(unittest.TestCase):
     #     self.assertTrue(spades.calculate_card_value(test_card), 2)
 
     def test_compare_cards(self):
-        card_1 = spades.Card('3', 'spades')
-        card_2 = spades.Card('3', 'hearts')
+        card_1 = spades.Card('3', 'spades', 4)
+        card_2 = spades.Card('3', 'hearts', 3)
         spades.compare_cards(card_1, card_2)
         self.assertTrue(spades.players_books, 1)
+
+        card_3 = spades.Card(rank='3', suit='hearts', value=3)
+        card_4 = spades.Card(rank='5', suit='clubs', value=3)
+        spades.compare_cards(card_3, card_4)
+        self.assertGreater(spades.players_books, spades.AI_books)
 
     def test_find_cards_of_suit(self):
         output = spades.find_cards_of_suit("spades", self.TEST_HAND)

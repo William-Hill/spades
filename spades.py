@@ -51,12 +51,17 @@ def compare_cards(card_1, card_2):
     global AI_books
     card_1_value = calculate_card_value(card_1.rank, card_1.suit)
     card_2_value = calculate_card_value(card_2.rank, card_2.suit)
-    #TODO: Add tie breaker for cards with equivalent calculated values
     #TODO: calling value again is repetitive change comparison to card_1.value > card_2.value
-    #TODO: in case of tie breaker, do comparison of suits to determine winner
     if card_1_value > card_2_value:
         print "player won book"
         players_books +=1
+    elif card_1_value == card_2_value:
+        if SUITS.index(card_1.suit) > SUITS.index(card_2.suit):
+            print "player won book"
+            players_books +=1
+        else:
+            print "AI won book"
+            AI_books +=1
     else:
         print "AI won book"
         AI_books +=1
