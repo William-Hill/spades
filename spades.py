@@ -146,6 +146,7 @@ def main():
         #TODO: Add a check for if spades have been cut
         #TODO: If player tries to cut, deny them
             #(if spade is played when card of same suit is available)
+        #TODO: Account for index out of range error
         players_card = players_hand.pop(players_card_selection-1)
         #-1 for off by 1 error
         AI_card = AI_choose_card(AI_hand, players_card)
