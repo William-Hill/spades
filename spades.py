@@ -2,8 +2,7 @@ from collections import namedtuple
 import random
 import logging
 
-logging.basicConfig(format = "%(levelname): %(lineno)s %(funcName)s: %(asctime)s", level=logging.DEBUG, datefmt='%m/%d/%Y %I:%M:%S %p')
-logger = logging.getLogger(__name__)
+logging.basicConfig(filename='AI_hand.log',level=logging.DEBUG)
 
 SUITS = ['clubs', 'diamonds', 'hearts', 'spades']
 RANKS = ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
@@ -22,6 +21,7 @@ def generate_deck():
 
 def deal_hand(hand_list, deck, cards_in_hand = 5):
     #TODO: possibly move shuffle here (add test)
+
     #TODO: validate cards_in_hand: make sure it is int, set max cards_in_hand as well (10 cards?)
     '''pass in blank list of AI hand or player hand'''
     for _ in range(cards_in_hand):
@@ -78,6 +78,7 @@ def initialize_game():
 
     deal_hand(AI_hand, deck_of_cards)
     AI_hand = sort_hand(AI_hand)
+    logging.debug("AI_hand: %s", AI_hand)
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
 
