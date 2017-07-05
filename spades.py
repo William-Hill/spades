@@ -26,16 +26,8 @@ def deal_hand(hand_list, deck):
 
 def calculate_card_value(rank, suit):
     #TODO: Add multiplier for spades suit
-    # print "card:", card
-    # rank = RANKS.index(card.rank)
     rank_value = RANKS.index(rank)
-    # print "rank:", rank
-    # print "{rank} rank_value: {rank_value}".format(rank=rank, rank_value=rank_value)
-    # suit = SUITS.index(card.suit)
     suit_value = SUITS.index(suit)
-    # print "suit:", suit
-    # print "{suit} suit_value: {suit_value}".format(suit=suit, suit_value=suit_value)
-    # return rank + suit
     print "{rank} of {suit} = {value}".format(rank=rank, suit=suit, value=rank_value + suit_value)
     return rank_value + suit_value
 
@@ -83,9 +75,7 @@ def AI_choose_card(hand, players_card = None):
     # sorted_AI_hand = sort_hand(AI_hand)
     # print "sorted_AI_hand: ", sorted_AI_hand
     if players_card:
-        # players_card_value = calculate_card_value(players_card.rank, players_card.value)
         print "players_card_value: ", players_card.value
-        # temp_card = None
         temp_card = hand[0]
         # same_suit_cards = find_cards_of_suit(players_card.suit, AI_hand)
         #loop through list looking for card of same suit
@@ -111,19 +101,7 @@ def AI_choose_card(hand, players_card = None):
         chosen_card = hand.pop(0)
         return chosen_card
 
-
-
-    # card_values = []
-    # for card in AI_hand:
-    #     value = calculate_card_value(card)
-    #     card_values.append(value)
-    # if not spades_cut:
-    #     playable
-
 initialize_game()
 #TODO: log AI_hand to a file with timestamp and unique gameID and/or timestamp
 print "AI_hand:", AI_hand
 print "players_hand: ", players_hand
-# print "number of cards:", len(deck_of_cards)
-
-# print "card_value:", calculate_card_value(players_hand[0])
