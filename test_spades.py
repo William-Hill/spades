@@ -38,6 +38,7 @@ class test_SPADES(unittest.TestCase):
         self.assertEqual(chosen_card.value, 4)
         print "remaining hand: ", sorted_hand
 
+        #lowest card by the time this test comes
         chosen_card = spades.AI_choose_card(sorted_hand)
         self.assertEqual(chosen_card.value, 3)
 
