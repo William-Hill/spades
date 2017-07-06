@@ -13,13 +13,15 @@ AI_books = 0
 players_hand = []
 players_books = 0
 spades_cut = False
+players_turn = False
 Card = namedtuple('Card', ['rank', 'suit', 'value'])
 ''' value is used to compare which card wins '''
 
 def generate_deck():
+    ''' gives a list of 53 card tuples with rank and suit'''
     cards = [Card(rank, suit, calculate_card_value(rank,suit)) for rank in RANKS for suit in SUITS]
     return cards
-    ''' gives a list of 53 card tuples with rank and suit'''
+
 
 def deal_hand(hand_list, deck, cards_in_hand = 5):
     #TODO: possibly move shuffle here (add test)
@@ -57,16 +59,21 @@ def compare_cards(card_1, card_2):
     if card_1_value > card_2_value:
         print "player won book"
         players_books +=1
+        players_turn = True
     elif card_1_value == card_2_value:
         if SUITS.index(card_1.suit) > SUITS.index(card_2.suit):
             print "player won book"
             players_books +=1
+            players_turn = True
         else:
             print "AI won book"
             AI_books +=1
+            players_turn = False
     else:
         print "AI won book"
         AI_books +=1
+        players_turn = False
+
 
 def initialize_game():
     '''Sets up initial game by dealing and sorting player and AI hand'''
@@ -152,14 +159,19 @@ def main():
     while len(players_hand) > 0:
         #TODO: replace this with print_players_hand()
         print players_hand
-        players_card_selection = int(raw_input("Choose a card to play \n"))
-        #TODO: Add a check for if spades have been cut
-        #TODO: If player tries to cut, deny them
-            #(if spade is played when card of same suit is available)
-        #TODO: Account for index out of range error
-        players_card = players_hand.pop(players_card_selection-1)
-        #-1 for off by 1 error
-        AI_card = AI_choose_card(AI_hand, players_card)
+        if not players_turn:
+            AI_card = AI_choose_card(AI_hand)
+            players_card_selection = int(raw_input("Choose a card to play \n"))
+            players_card = players_hand.pop(players_card_selection-1)
+        else:
+            players_card_selection = int(raw_input("Choose a card to play \n"))
+            #TODO: Add a check for if spades have been cut
+            #TODO: If player tries to cut, deny them
+                #(if spade is played when card of same suit is available)
+            #TODO: Account for index out of range error
+            players_card = players_hand.pop(players_card_selection-1)
+            #-1 for off by 1 error
+            AI_card = AI_choose_card(AI_hand, players_card)
         #TODO: set a second parameter to figure out if AI or player is going first
         compare_cards(players_card, AI_card)
         print "player's books:", players_books
