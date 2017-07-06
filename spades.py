@@ -1,9 +1,11 @@
 from collections import namedtuple
 import random
 import logging
+import uuid
 
 logging.basicConfig(filename='AI_hand.log',level=logging.DEBUG)
 
+GAME_ID = str(uuid.uuid4())[:5]
 SUITS = ['clubs', 'diamonds', 'hearts', 'spades']
 RANKS = ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
 AI_hand = []
@@ -78,6 +80,7 @@ def initialize_game():
 
     deal_hand(AI_hand, deck_of_cards)
     AI_hand = sort_hand(AI_hand)
+    logging.info("\nGAME_ID: %s", GAME_ID)
     logging.debug("AI_hand: %s", AI_hand)
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
@@ -140,6 +143,7 @@ def print_players_hand():
     pass
 
 def main():
+    print "             Game ID:", GAME_ID
     print "Welcome to the CyberCamp 2017 Game of Spades!!"
     print "You will be playing against an AI-controlled opponent."
     initialize_game()
