@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 from collections import namedtuple
 import random
 import logging
@@ -24,9 +25,20 @@ def generate_deck():
 
 
 def deal_hand(hand_list, deck, cards_in_hand = 5):
+<<<<<<< HEAD
     #TODO: possibly move shuffle here (add test)
 
     #TODO: validate cards_in_hand: make sure it is int, set max cards_in_hand as well (10 cards?)
+=======
+    random.shuffle(deck)
+    if cards_in_hand != int:
+        #print "Number of cards must be a valid number."
+        cards_in_hand = 5
+    elif cards_in_hand > 10:
+        print "Cards in hand must be less than 10"
+        cards_in_hand = 5
+
+>>>>>>> Rachael_Issues
     '''pass in blank list of AI hand or player hand'''
     for _ in range(cards_in_hand):
         item = deck.pop()
@@ -53,11 +65,18 @@ def sort_hand(hand):
 def compare_cards(card_1, card_2):
     global players_books
     global AI_books
+<<<<<<< HEAD
     card_1_value = calculate_card_value(card_1.rank, card_1.suit)
     card_2_value = calculate_card_value(card_2.rank, card_2.suit)
     #TODO: calling value again is repetitive change comparison to card_1.value > card_2.value
     if card_1_value > card_2_value:
         print "player won book"
+=======
+    #TODO: Add tie breaker for cards with equivalent calculated values
+    #TODO: in case of tie breaker, do comparison of suits to determine winner
+    if card_1.value > card_2.value:
+        print ("player won book")
+>>>>>>> Rachael_Issues
         players_books +=1
         players_turn = True
     elif card_1_value == card_2_value:
@@ -70,7 +89,7 @@ def compare_cards(card_1, card_2):
             AI_books +=1
             players_turn = False
     else:
-        print "AI won book"
+        print ("AI won book")
         AI_books +=1
         players_turn = False
 
@@ -82,22 +101,14 @@ def initialize_game():
     deck_of_cards = generate_deck()
     # print "number of cards:", len(deck_of_cards)
     # print "cards:", deck_of_cards
-    random.shuffle(deck_of_cards)
     # print "shuffled deck:", deck_of_cards
-
+    #cardnum = int(raw_input("How many cards per hand? \n"))
     deal_hand(AI_hand, deck_of_cards)
     AI_hand = sort_hand(AI_hand)
     logging.info("\nGAME_ID: %s", GAME_ID)
     logging.debug("AI_hand: %s", AI_hand)
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
-
-
-def find_cards_of_suit(suit, hand):
-    #TODO: delete (Deprecated)
-    cards_of_suit = [card for card in hand if card.suit == suit]
-    return cards_of_suit
-
 
 def AI_choose_card(hand, players_card = None):
 
@@ -109,8 +120,7 @@ def AI_choose_card(hand, players_card = None):
         temp_card = hand[0]
         # same_suit_cards = find_cards_of_suit(players_card.suit, AI_hand)
         #loop through list looking for card of same suit
-        #TODO: remove enumerate and index
-        for index, card in enumerate(hand):
+        for card in hand:
         #if card is found of same suit, set as temp card
             if card.suit == players_card.suit:
                 temp_card = card
@@ -119,8 +129,7 @@ def AI_choose_card(hand, players_card = None):
                 else:
                     continue
         #if card of same suit is not found, set temp card to card with a higher value than player card
-            if not temp_card and card.value > players_card.value:
-            #TODO: will never not be temp card since temp card is automatically set to first in hand
+            if  card.value > players_card.value:
                 temp_card = card
                 continue
         #if no card is higher than player card, set temp card to lower card in hand
@@ -157,6 +166,7 @@ def main():
 
     # print "Here's the hand you have been dealt: \n"
     while len(players_hand) > 0:
+<<<<<<< HEAD
         #TODO: replace this with print_players_hand()
         print players_hand
         if not players_turn:
@@ -172,6 +182,15 @@ def main():
             players_card = players_hand.pop(players_card_selection-1)
             #-1 for off by 1 error
             AI_card = AI_choose_card(AI_hand, players_card)
+=======
+        print_players_hand()
+        players_card_selection = int(raw_input("Choose a card to play \n"))
+        #TODO: Add a check for if spades have been cut
+            #(if spade is played when card of same suit is available)
+        players_card = players_hand.pop(players_card_selection-1)
+        #-1 for off by 1 error
+        AI_card = AI_choose_card(AI_hand, players_card)
+>>>>>>> Rachael_Issues
         #TODO: set a second parameter to figure out if AI or player is going first
         compare_cards(players_card, AI_card)
         print "player's books:", players_books
