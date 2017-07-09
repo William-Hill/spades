@@ -3,6 +3,7 @@ from collections import namedtuple
 import random
 import logging
 import uuid
+import pdb
 
 logging.basicConfig(filename='AI_hand.log',level=logging.DEBUG)
 
@@ -40,8 +41,10 @@ def deal_hand(hand_list, deck, cards_in_hand = 5):
 def calculate_card_value(rank, suit):
     #TODO: Add multiplier for spades suit
     '''Calculates the value by the index in the list'''
-    rank_value = RANKS.index(rank)
-    suit_value = SUITS.index(suit)
+    rank_value = RANKS.index(rank) + 1
+    suit_value = SUITS.index(suit) + 1
+    if suit == "spades":
+        return rank_value * 15
     return rank_value + suit_value
 
 def getKey(hand):
@@ -82,8 +85,8 @@ def initialize_game():
     #cardnum = int(raw_input("How many cards per hand? \n"))
     deal_hand(AI_hand, deck_of_cards)
     AI_hand = sort_hand(AI_hand)
-    logging.info("\nGAME_ID: %s", GAME_ID)
-    logging.debug("AI_hand: %s", AI_hand)
+    logging.info("GAME_ID: %s", GAME_ID)
+    logging.debug("AI_hand: %s \n", AI_hand)
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
 
@@ -109,6 +112,7 @@ def AI_choose_card(hand, players_card = None):
         chosen_card_index = hand.index(temp_card)
         print "chosen_card_index: ", chosen_card_index
         chosen_card = hand.pop(chosen_card_index)
+        #TODO: if chosen_card is a spade, set cut spades to True
         print "chosen_card:", chosen_card
         return chosen_card
     else:
@@ -124,7 +128,14 @@ def print_players_hand(players_hand):
     for index, card in enumerate(players_hand):
         print "{index}) {rank} of {suit} (value: {value})".format(index=index+1, rank=card.rank, suit=card.suit, value=card.value)
 
+def print_AI_card(AI_card):
+    print "AI_card: {rank} of {suit} (value: {value})".format(rank=AI_card.rank, suit=AI_card.suit, value=AI_card.value)
+
+def print_player_card(player_card):
+    print "player_card: {rank} of {suit} (value: {value})".format(rank=player_card.rank, suit=player_card.suit, value=player_card.value)
+
 def main():
+    # pdb.set_trace()
     print "Game ID:", GAME_ID
     print "Welcome to the CyberCamp 2017 Game of Spades!!"
     print "You will be playing against an AI-controlled opponent."
@@ -132,11 +143,14 @@ def main():
 
     # print "Here's the hand you have been dealt: \n"
     while len(players_hand) > 0:
+        # pdb.set_trace()
         print_players_hand(players_hand)
         if not players_turn:
             AI_card = AI_choose_card(AI_hand)
             players_card_selection = int(raw_input("Choose a card to play \n"))
             players_card = players_hand.pop(players_card_selection-1)
+            print_player_card(players_card)
+            print_AI_card(AI_card)
         else:
             players_card_selection = int(raw_input("Choose a card to play \n"))
             #TODO: Add a check for if spades have been cut
@@ -146,6 +160,7 @@ def main():
             players_card = players_hand.pop(players_card_selection-1)
             #-1 for off by 1 error
             AI_card = AI_choose_card(AI_hand, players_card)
+            print "AI_card:", AI_card
         #TODO: set a second parameter to figure out if AI or player is going first
         compare_cards(players_card, AI_card)
         print "player's books:", players_books
