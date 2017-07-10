@@ -36,7 +36,7 @@ def initialize_game():
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
 
-def AI_choose_card(hand, players_card=None):
+def choose_AI_card(hand, players_card=None):
     '''AI logic for choosing a card to play '''
     global spades_cut
     if players_card:
