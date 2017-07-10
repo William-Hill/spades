@@ -82,20 +82,21 @@ def print_player_card(player_card):
     ''' Prints out the card the player chose in a readable format '''
     print "player_card: {rank} of {suit} (value: {value})".format(rank=player_card.rank, suit=player_card.suit, value=player_card.value)
 
+
+def deal_hand(hand_list, deck):
+    ''' Deals a hand of cards from the deck '''
+    pass
+
+def calculate_card_value(rank, suit):
+    ''' Calculates the playing value of a card by its rank and suit '''
+    pass
+    
 def choose_player_card():
     ''' Lets the player choose a card from their deck '''
     pass
 
 def compare_cards(card_1, card_2):
     ''' Compares the player's card to the AI's card to determine the winner '''
-    pass
-
-def deal_hand(hand_list, deck, cards_in_hand=5):
-    ''' Deals a hand of cards from the deck '''
-    pass
-
-def calculate_card_value(rank, suit):
-    ''' Calculates the playing value of a card by its rank and suit '''
     pass
 
 def main():
