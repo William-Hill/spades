@@ -36,36 +36,6 @@ def initialize_game():
     deal_hand(players_hand, deck_of_cards)
     players_hand = sort_hand(players_hand)
 
-def choose_AI_card(hand, players_card=None):
-    '''AI logic for choosing a card to play '''
-    global spades_cut
-    if players_card:
-        #set to weakest card in deck
-        temp_card = hand[0]
-        # loop through list looking for card of same suit
-        for card in hand:
-            # if card is found of same suit, set as temp card
-            if card.suit == players_card.suit:
-                temp_card = card
-                if temp_card.value > players_card.value:
-                    break
-                else:
-                    continue
-        # if card of same suit is not found, set temp card to card with a higher value than player card
-            if card.value > players_card.value:
-                temp_card = card
-                continue
-        # if no card is higher than player card, set temp card to lower card in hand
-        chosen_card_index = hand.index(temp_card)
-        chosen_card = hand.pop(chosen_card_index)
-        if chosen_card.suit == "spades":
-            spades_cut = True
-        return chosen_card
-    else:
-        #If it is the AI's turn, it plays its weakest card
-        chosen_card = hand.pop(0)
-        return chosen_card
-
 def print_players_hand(players_hand):
     '''print the player's hand of cards as a menu style that allows cards to be
     selected.'''
@@ -91,6 +61,10 @@ def calculate_card_value(rank, suit):
     ''' Calculates the playing value of a card by its rank and suit '''
     pass
     
+def choose_AI_card(hand, players_card=None):
+    '''AI logic for choosing a card to play '''
+    pass
+
 def choose_player_card():
     ''' Lets the player choose a card from their deck '''
     pass
