@@ -7,6 +7,7 @@ AI_hand = []
 AI_books = 0
 players_hand = []
 players_books = 0
+players_turn = False
 Card = namedtuple('Card', ['rank', 'suit', 'value'])
 
 def generate_deck():
