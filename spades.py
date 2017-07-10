@@ -18,7 +18,6 @@ players_books = 0
 spades_cut = False
 players_turn = False
 Card = namedtuple('Card', ['rank', 'suit', 'value'])
-''' value is used to compare which card wins '''
 
 def generate_deck():
     ''' gives a list of 53 card tuples with rank and suit'''
@@ -39,7 +38,6 @@ def deal_hand(hand_list, deck, cards_in_hand = 5):
         hand_list.append(item)
 
 def calculate_card_value(rank, suit):
-    #TODO: Add multiplier for spades suit
     '''Calculates the value by the index in the list'''
     rank_value = RANKS.index(rank) + 1
     suit_value = SUITS.index(suit) + 1
@@ -59,6 +57,7 @@ def sort_hand(hand):
 def compare_cards(card_1, card_2):
     global players_books
     global AI_books
+    global players_turn
     if card_1.value > card_2.value:
         print ("player won book")
         players_books +=1
@@ -91,8 +90,8 @@ def initialize_game():
     players_hand = sort_hand(players_hand)
 
 def AI_choose_card(hand, players_card = None):
+    global spades_cut
     if players_card:
-        print "players_card_value: ", players_card.value
         '''set to weakest card in deck'''
         temp_card = hand[0]
         #loop through list looking for card of same suit
@@ -110,17 +109,14 @@ def AI_choose_card(hand, players_card = None):
                 continue
         #if no card is higher than player card, set temp card to lower card in hand
         chosen_card_index = hand.index(temp_card)
-        print "chosen_card_index: ", chosen_card_index
         chosen_card = hand.pop(chosen_card_index)
-        #TODO: if chosen_card is a spade, set cut spades to True
-        print "chosen_card:", chosen_card
+        if chosen_card.suit == "spades":
+            spades_cut = True
         return chosen_card
     else:
         '''If it is the AI's turn, it plays its weakest card'''
         chosen_card = hand.pop(0)
         return chosen_card
-
-#TODO: log AI_hand to a file with timestamp and unique gameID and/or timestamp
 
 def print_players_hand(players_hand):
     '''print the player's hand of cards as a menu style that allows cards to be
@@ -134,37 +130,40 @@ def print_AI_card(AI_card):
 def print_player_card(player_card):
     print "player_card: {rank} of {suit} (value: {value})".format(rank=player_card.rank, suit=player_card.suit, value=player_card.value)
 
+def choose_player_card():
+    while True:
+        card_index = int(raw_input("Choose a card to play \n"))
+        try:
+            card = players_hand.pop(card_index-1)
+            break
+        except IndexError, error:
+            print "There is no card that matches index {}".format(card_index)
+            continue
+    return card
+
 def main():
-    # pdb.set_trace()
+    global players_turn
     print "Game ID:", GAME_ID
     print "Welcome to the CyberCamp 2017 Game of Spades!!"
     print "You will be playing against an AI-controlled opponent."
     initialize_game()
 
-    # print "Here's the hand you have been dealt: \n"
     while len(players_hand) > 0:
-        # pdb.set_trace()
         print_players_hand(players_hand)
         if not players_turn:
             AI_card = AI_choose_card(AI_hand)
-            players_card_selection = int(raw_input("Choose a card to play \n"))
-            players_card = players_hand.pop(players_card_selection-1)
+            players_card = choose_player_card()
             print_player_card(players_card)
             print_AI_card(AI_card)
         else:
-            players_card_selection = int(raw_input("Choose a card to play \n"))
-            #TODO: Add a check for if spades have been cut
-            #TODO: If player tries to cut, deny them
-                #(if spade is played when card of same suit is available)
-            #TODO: Account for index out of range error
-            players_card = players_hand.pop(players_card_selection-1)
-            #-1 for off by 1 error
+            players_card = choose_player_card()
             AI_card = AI_choose_card(AI_hand, players_card)
-            print "AI_card:", AI_card
-        #TODO: set a second parameter to figure out if AI or player is going first
+            print_AI_card(AI_card)
+            print_player_card(players_card)
+
         compare_cards(players_card, AI_card)
         print "player's books:", players_books
-        print "AI's books: ", AI_books
+        print "AI's books: ", AI_books, "\n"
 
 if __name__ == '__main__':
     main()
